@@ -790,6 +790,8 @@ function dvEdge(x, z) {
 // the turned-back corner: everything past this line is folded over towards the foot-left
 const FL0 = [1.33, 3.14], FN = [0.6, 0.8], FT = [-0.8, 0.6];
 function foldQ(x, z) { const dx = x - FL0[0], dz = z - FL0[1], tau = dx * FT[0] + dz * FT[1]; return dx * FN[0] + dz * FN[1] + 0.02 * Math.sin(tau * 5.2 + 0.8) + 0.008 * Math.sin(tau * 13 + 2); }
+// How bunched-up the duvet is: 1 = piled into tall rolls, ~0.3 = an ordinary slept-in duvet lying fairly flat.
+const LOBE_SCALE = 0.3;
 const LOBES = [
   [0.88, 2.6, 0.34, 0.17, 12, 0.185],     // the big bunch: a tall roll lying across the bed...
   [0.8, 2.93, 0.3, 0.13, 20, 0.142],      // ...a lower one pushed up against it (a deep crease between them)
@@ -801,7 +803,7 @@ const LOBES = [
   [1.34, 2.46, 0.42, 0.32, 80, 0.06],     // bunched up under the throw
   [1.2, 2.9, 0.28, 0.18, -35, 0.03],      // under the turned-back corner
   [1.1, 2.26, 0.27, 0.16, -20, 0.05],
-].map(([cx, cz, a, b, deg, h]) => ({ cx, cz, ia: 1 / a, ib: 1 / b, c: Math.cos((deg * Math.PI) / 180), s: Math.sin((deg * Math.PI) / 180), h }));
+].map(([cx, cz, a, b, deg, h]) => ({ cx, cz, ia: 1 / a, ib: 1 / b, c: Math.cos((deg * Math.PI) / 180), s: Math.sin((deg * Math.PI) / 180), h: h * LOBE_SCALE }));
 /** Where the cloth is held calm: under the throw (tm), under the turned-back flap (fm), under the book (bk). */
 const CALM = { tm: 0, fm: 0, bk: 0 };
 function calmAt(x, z) {
